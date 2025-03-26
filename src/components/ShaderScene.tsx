@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import vertexShader from '../shaders/vertex.glsl?raw';
+import { cn } from '../lib/utils';
 
 interface ShaderSceneProps {
   fragmentShader: string;
+  className?: string;
 }
 
-export const ShaderScene = ({ fragmentShader }: ShaderSceneProps) => {
+export const ShaderScene = ({ fragmentShader, className }: ShaderSceneProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -107,5 +109,5 @@ export const ShaderScene = ({ fragmentShader }: ShaderSceneProps) => {
     };
   }, [fragmentShader]);
 
-  return <div ref={containerRef} className="w-full h-full" />;
+  return <div ref={containerRef} className={cn("w-full h-screen", className)}/>;
 }; 

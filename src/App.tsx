@@ -8,7 +8,7 @@ function App() {
   return (
     <Router>
       <div className="w-full min-h-screen bg-gray-50">
-        <div className="max-w-7xl mx-auto p-8 text-center">
+        <div className="max-w-7xl mx-auto text-center">
           <Routes>
             <Route path="/" element={
               <div className="w-full min-h-screen flex flex-col items-center p-8">
@@ -18,19 +18,19 @@ function App() {
                     to="/wave"
                     title="Wave Shader"
                     description="A simple wave animation effect"
-                    preview={<WaveShader className="w-full h-[300px] mb-4" />}
+                    preview={<WaveShader className="h-[300px] mb-4" />}
                   />
                   <ShaderCard
                     to="/circle"
                     title="Circle Shader"
                     description="An animated circle pattern"
-                    preview={<CircleShader className="w-full h-[300px] mb-4" />}
+                    preview={<CircleShader className="h-[300px] mb-4" />}
                   />
                   <ShaderCard
                     to="/noise"
                     title="Noise Shader"
                     description="A dynamic noise pattern"
-                    preview={<NoiseShader className="w-full h-[300px] mb-4" />}
+                    preview={<NoiseShader className="h-[300px] mb-4" />}
                   />
                 </div>
               </div>
