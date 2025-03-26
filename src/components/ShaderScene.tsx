@@ -12,9 +12,15 @@ export const ShaderScene = ({ fragmentShader }: ShaderSceneProps) => {
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const materialRef = useRef<THREE.ShaderMaterial | null>(null);
+  const animationFrameRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (!containerRef.current) return;
+
+    // Clean up any existing canvas
+    if (containerRef.current.children.length > 0) {
+      containerRef.current.innerHTML = '';
+    }
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -23,7 +29,7 @@ export const ShaderScene = ({ fragmentShader }: ShaderSceneProps) => {
     // Camera setup
     const camera = new THREE.PerspectiveCamera(
       75,
-      window.innerWidth / window.innerHeight,
+      containerRef.current.clientWidth / containerRef.current.clientHeight,
       0.1,
       1000
     );
@@ -32,7 +38,7 @@ export const ShaderScene = ({ fragmentShader }: ShaderSceneProps) => {
 
     // Renderer setup
     const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
     containerRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
@@ -54,7 +60,7 @@ export const ShaderScene = ({ fragmentShader }: ShaderSceneProps) => {
 
     // Animation
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameRef.current = requestAnimationFrame(animate);
       if (materialRef.current) {
         materialRef.current.uniforms.uTime.value += 0.01;
       }
@@ -62,14 +68,44 @@ export const ShaderScene = ({ fragmentShader }: ShaderSceneProps) => {
     };
     animate();
 
+    // Resize handler
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width, height } = entry.contentRect;
+        if (cameraRef.current && rendererRef.current) {
+          cameraRef.current.aspect = width / height;
+          cameraRef.current.updateProjectionMatrix();
+          rendererRef.current.setSize(width, height);
+        }
+      }
+    });
+
+    resizeObserver.observe(containerRef.current);
+
     // Cleanup
     return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      resizeObserver.disconnect();
       if (containerRef.current && rendererRef.current) {
         containerRef.current.removeChild(rendererRef.current.domElement);
         rendererRef.current.dispose();
+        rendererRef.current = null;
+      }
+      if (materialRef.current) {
+        materialRef.current.dispose();
+        materialRef.current = null;
+      }
+      if (sceneRef.current) {
+        sceneRef.current.clear();
+        sceneRef.current = null;
+      }
+      if (cameraRef.current) {
+        cameraRef.current = null;
       }
     };
   }, [fragmentShader]);
 
-  return <div ref={containerRef} style={{ width: '100%', height: '100vh' }} />;
+  return <div ref={containerRef} className="w-full h-full" />;
 }; 
