@@ -1,9 +1,10 @@
 import { ShaderScene } from '../components/ShaderScene';
 import circleShader from '../shaders/circle.glsl?raw';
+import { cn } from '../lib/utils';
 
-export const CircleShader = () => {
+export const CircleShader = ({ className }: { className?: string }) => {
   return (
-    <div style={{ width: '100%', height: '100vh' }}>
+    <div className={cn("w-screen h-screen", className)}>
       <ShaderScene fragmentShader={circleShader} />
     </div>
   );

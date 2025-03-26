@@ -1,9 +1,10 @@
 import { ShaderScene } from '../components/ShaderScene';
 import noiseShader from '../shaders/noise.glsl?raw';
+import { cn } from '../lib/utils';
 
-export const NoiseShader = () => {
+export const NoiseShader = ({ className }: { className?: string }) => {
   return (
-    <div style={{ width: '100%', height: '100vh' }}>
+    <div className={cn("w-screen h-screen", className)}>
       <ShaderScene fragmentShader={noiseShader} />
     </div>
   );

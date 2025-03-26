@@ -1,9 +1,10 @@
 import { ShaderScene } from '../components/ShaderScene';
 import waveShader from '../shaders/wave.glsl?raw';
+import { cn } from '../lib/utils';
 
-export const WaveShader = () => {
+export const WaveShader = ({ className }: { className?: string }) => {
   return (
-    <div style={{ width: '100%', height: '100vh' }}>
+    <div className={cn("w-screen h-screen", className)}>
       <ShaderScene fragmentShader={waveShader} />
     </div>
   );
