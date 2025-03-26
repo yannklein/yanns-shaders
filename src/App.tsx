@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { WaveShader } from './pages/WaveShader';
 import { CircleShader } from './pages/CircleShader';
 import { NoiseShader } from './pages/NoiseShader';
